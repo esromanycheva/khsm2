@@ -105,7 +105,7 @@ RSpec.describe Game, type: :model do
       end
     end
 
-    describe "#previous_game_question" do
+    describe "#current_game_question" do
       before do
         game_w_questions.game_questions.first(5).each do |q|
           game_w_questions.answer_current_question!(q.correct_answer_key)
@@ -114,7 +114,18 @@ RSpec.describe Game, type: :model do
 
       it do
         expect(game_w_questions.current_game_question).to eq game_w_questions.game_questions[5]
-        expect(game_w_questions.previous_game_question).to eq game_w_questions.game_questions[4]
+      end
+    end
+
+    describe "#previous_level" do
+      before do
+        game_w_questions.game_questions.first(5).each do |q|
+          game_w_questions.answer_current_question!(q.correct_answer_key)
+        end
+      end
+
+      it do
+        expect(game_w_questions.previous_level).to eq 4
       end
     end
 
