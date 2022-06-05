@@ -83,9 +83,7 @@ RSpec.describe Game, type: :model do
       end
 
       it "user take money" do
-        game_w_questions.game_questions.first(5).each do |q|
-          game_w_questions.answer_current_question!(q.correct_answer_key)
-        end
+        game_w_questions.update(current_level: 5)
         game_w_questions.take_money!
 
         expect(game_w_questions.status).to eq :money
@@ -105,24 +103,24 @@ RSpec.describe Game, type: :model do
       end
     end
 
-    describe "#current_game_question" do
-      before do
-        game_w_questions.game_questions.first(5).each do |q|
-          game_w_questions.answer_current_question!(q.correct_answer_key)
-        end
-      end
+    describe "#previous_game_question" do
+      before { game_w_questions.update(current_level: 5) }
 
-      it do
+      it 'correct value' do
+        expect(game_w_questions.previous_game_question).to eq game_w_questions.game_questions[4]
+      end
+    end
+
+    describe "#current_game_question" do
+      before { game_w_questions.update(current_level: 5) }
+
+      it 'correct value' do
         expect(game_w_questions.current_game_question).to eq game_w_questions.game_questions[5]
       end
     end
 
     describe "#previous_level" do
-      before do
-        game_w_questions.game_questions.first(5).each do |q|
-          game_w_questions.answer_current_question!(q.correct_answer_key)
-        end
-      end
+      before { game_w_questions.update(current_level: 5) }
 
       it do
         expect(game_w_questions.previous_level).to eq 4
@@ -138,6 +136,7 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions.prize).to eq 0
         expect(game_w_questions.updated_at).to be_within(1.second).of Time.now
         expect(game_w_questions.finished_at).to be nil
+        expect(game_w_questions.status).to eq :in_progress
       end
 
       it "user choose wrong answer" do
@@ -148,6 +147,7 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions.prize).to eq 0
         expect(game_w_questions.updated_at).to be_within(1.second).of Time.now
         expect(game_w_questions.finished_at).to be_within(1.second).of Time.now
+        expect(game_w_questions.status).to eq :fail
       end
 
       it "user choose right answer for last question" do
@@ -159,6 +159,7 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions.prize).to eq 1000000
         expect(game_w_questions.updated_at).to be_within(1.second).of Time.now
         expect(game_w_questions.finished_at).to be_within(1.second).of Time.now
+        expect(game_w_questions.status).to eq :won
       end
 
       it "user choose right answer but time is over" do
@@ -170,6 +171,7 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions.prize).to eq 0
         expect(game_w_questions.updated_at).to be_within(1.second).of Time.now
         expect(game_w_questions.finished_at).to be_within(1.second).of Time.now
+        expect(game_w_questions.status).to eq :timeout
       end
     end
   end
