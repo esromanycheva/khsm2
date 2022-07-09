@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 require 'support/my_spec_helper' # наш собственный класс с вспомогательными методами
-
 # Тестовый сценарий для игрового контроллера
 # Самые важные здесь тесты:
 #   1. на авторизацию (чтобы к чужим юзерам не утекли не их данные)
@@ -300,34 +299,69 @@ RSpec.describe GamesController, type: :controller do
     end
 
     describe '#help' do
-      before do
-        put :help, id: game_w_questions.id, help_type: :audience_help
+      context 'call audience_help' do
+        before do
+          put :help, id: game_w_questions.id, help_type: :audience_help
+        end
+
+        it 'game not finished' do
+          game = assigns(:game)
+          expect(game.finished?).to be false
+        end
+
+        it 'used audience help' do
+          game = assigns(:game)
+          expect(game.audience_help_used).to be_truthy
+        end
+
+        it 'has a audience_help' do
+          game = assigns(:game)
+          expect(game.current_game_question.help_hash[:audience_help]).to be
+        end
+
+        it 'contain variants in audience_help' do
+          game = assigns(:game)
+          expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
+        end
+
+        it 'redirect to game' do
+          game = assigns(:game)
+          expect(response).to redirect_to(game_path(game))
+        end
       end
 
-      it 'game not finished' do
-        game = assigns(:game)
-        expect(game.finished?).to be false
+      context 'call fifty_fifty' do
+        before do
+          put :help, id: game_w_questions.id, help_type: :fifty_fifty
+        end
+
+        it 'game not finished' do
+          game = assigns(:game)
+          expect(game.finished?).to be false
+        end
+
+        it 'used audience help' do
+          game = assigns(:game)
+          expect(game.fifty_fifty_used).to be_truthy
+        end
+
+        it 'has a audience_help' do
+          game = assigns(:game)
+          expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+        end
+
+        it 'contain variants in audience_help' do
+          game = assigns(:game)
+          fifty_fifty = game.current_game_question.help_hash[:fifty_fifty]
+          expect(fifty_fifty.count).to eq 2
+        end
+
+        it 'redirect to game' do
+          game = assigns(:game)
+          expect(response).to redirect_to(game_path(game))
+        end
       end
 
-      it 'used audience help' do
-        game = assigns(:game)
-        expect(game.audience_help_used).to be_truthy
-      end
-
-      it 'has a audience_help' do
-        game = assigns(:game)
-        expect(game.current_game_question.help_hash[:audience_help]).to be
-      end
-
-      it 'contain variants in audience_help' do
-        game = assigns(:game)
-        expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
-      end
-
-      it 'redirect to game' do
-        game = assigns(:game)
-        expect(response).to redirect_to(game_path(game))
-      end
     end
 
     describe '#take' do
