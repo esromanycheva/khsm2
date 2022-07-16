@@ -77,15 +77,14 @@ RSpec.describe GameQuestion, type: :model do
       expect(ff.size).to eq 2 # всего должно остаться 2 варианта
     end
 
-    it 'correct friend_call' do
-      expect(game_question.help_hash).not_to include(:friend_call)
-
-      game_question.add_friend_call
-
-      expect(game_question.help_hash).to include(:friend_call)
-
-      fc = game_question.help_hash[:friend_call]
-      expect(fc).to include('считает, что это вариант')
+    describe '#add_friend_call' do
+      it 'correct friend_call' do
+        expect(game_question.help_hash).not_to include(:friend_call)
+        game_question.add_friend_call
+        expect(game_question.help_hash).to include(:friend_call)
+        fc = game_question.help_hash[:friend_call]
+        expect(fc).to include('считает, что это вариант')
+      end
     end
   end
 
