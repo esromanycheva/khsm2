@@ -59,7 +59,7 @@ RSpec.describe GamesController, type: :controller do
       end
     end
 
-    describe '#answers' do
+    describe '#answer' do
       before do
         put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key
       end
