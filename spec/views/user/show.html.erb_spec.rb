@@ -3,11 +3,10 @@ require 'rails_helper'
 # Тест на шаблон users/show.html.erb
 
 RSpec.describe 'users/show', type: :view do
-  before(:each) do
-    user = FactoryBot.build_stubbed(:user, name: 'Вадик', balance: 5000)
+  before do
+    user = build_stubbed(:user, name: 'Вадик', balance: 5000)
     assign(:user, user)
-    assign(:games, [ FactoryBot.create(:game_with_questions, user: user) ])
-
+    assign(:games, [create(:game_with_questions, user: user)])
   end
 
   # Проверяем, что шаблон выводит имена игроков
