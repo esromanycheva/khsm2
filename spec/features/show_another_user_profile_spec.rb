@@ -16,5 +16,6 @@ RSpec.feature 'Show another user profile', type: :feature do
 
     expect(page).to have_content "#{another_user.name}"
     expect(page).to have_content '1 000 ₽'
+    expect(page).to have_no_content 'Сменить имя и пароль'
   end
 end
