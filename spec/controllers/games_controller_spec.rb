@@ -131,7 +131,7 @@ RSpec.describe GamesController, type: :controller do
   end
 
   context 'Usual user' do
-    before { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
+    before { sign_in user }
 
     describe '#create' do
       context 'create first game' do

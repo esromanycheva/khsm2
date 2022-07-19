@@ -1,4 +1,8 @@
 ru:
+  spec:
+    features:
+      change_password: 'Сменить имя и пароль'
+
   game_help:
     friends:
       - "Жора"
