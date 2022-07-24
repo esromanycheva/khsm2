@@ -20,7 +20,7 @@ RSpec.describe GameQuestion, type: :model do
 
     it 'correct .answer_correct?' do
       # именно под буквой b в тесте мы спрятали указатель на верный ответ
-      expect(game_question.answer_correct?('b')).to be_truthy
+      expect(game_question.answer_correct?('b')).to be true
     end
 
     it 'correct .help_hash' do
@@ -32,7 +32,7 @@ RSpec.describe GameQuestion, type: :model do
       game_question.help_hash['some_key2'] = 'blabla2'
 
       # сохраняем модель и ожидаем сохранения хорошего
-      expect(game_question.save).to be_truthy
+      expect(game_question.save).to be true
 
       # загрузим этот же вопрос из базы для чистоты эксперимента
       gq = GameQuestion.find(game_question.id)

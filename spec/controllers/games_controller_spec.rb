@@ -54,7 +54,7 @@ RSpec.describe GamesController, type: :controller do
         end
   
         it 'not show any flash' do
-          expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
+          expect(flash.empty?).to be true # удачный ответ не заполняет flash
         end
       end
   
@@ -285,7 +285,7 @@ RSpec.describe GamesController, type: :controller do
 
         it 'used audience help' do
           game = assigns(:game)
-          expect(game.audience_help_used).to be_truthy
+          expect(game.audience_help_used).to be true
         end
 
         it 'has a audience_help' do
@@ -316,7 +316,7 @@ RSpec.describe GamesController, type: :controller do
 
         it 'used audience help' do
           game = assigns(:game)
-          expect(game.fifty_fifty_used).to be_truthy
+          expect(game.fifty_fifty_used).to be true
         end
 
         it 'has a audience_help' do
